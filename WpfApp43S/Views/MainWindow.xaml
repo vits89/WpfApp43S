@@ -57,6 +57,21 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ListBox x:Name="lbStudents" ItemsSource="{Binding Path=Students}" DisplayMemberPath="Info" SelectedItem="{Binding Path=SelectedStudent}" AlternationCount="2" SelectionMode="Extended">
+                <ListBox.Style>
+                    <Style TargetType="ListBox">
+                        <Style.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Нет записей" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Style.Triggers>
