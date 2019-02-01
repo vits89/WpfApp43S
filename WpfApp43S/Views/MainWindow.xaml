@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp43S.Views"
+        xmlns:valconv="clr-namespace:WpfApp43S.ValueConverters"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
 
@@ -54,8 +55,27 @@
                 <TextBlock Text="Возраст" Grid.Row="2" />
                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=Age, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
 
-                <TextBlock Text="Пол (0 - м, 1 - ж) *" Grid.Row="3" />
-                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Path=Gender, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBlock Text="Пол *" VerticalAlignment="Center" Grid.Row="3" />
+                <ComboBox Grid.Column="1" Grid.Row="3">
+                    <ComboBox.SelectedIndex>
+                        <Binding Path="Gender" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                            <Binding.Converter>
+                                <valconv:GenderConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </ComboBox.SelectedIndex>
+                    <ComboBox.Style>
+                        <Style BasedOn="{StaticResource BaseStyle}" TargetType="ComboBox">
+                            <Style.Triggers>
+                                <StaticResource ResourceKey="HasValidationErrorTrigger" />
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                    
+                    <ComboBoxItem Content="" />
+                    <ComboBoxItem Content="мужчина" />
+                    <ComboBoxItem Content="женщина" />
+                </ComboBox>
             </Grid>
 
             <TextBlock Text="Поля, отмеченные звёздочкой (*), обязательны для заполнения." />

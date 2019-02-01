@@ -40,7 +40,6 @@ namespace WpfApp43S.Models
         }
 
         [Required(ErrorMessage = "Вы не указали пол")]
-        [Range(0, 1, ErrorMessage = "Пол должен быть равен 0 (мужской) или 1 (женский)")]
         public int? Gender
         {
             get => _gender;
