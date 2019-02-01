@@ -23,6 +23,8 @@ namespace WpfApp43S.ViewModels
                     {
                         if ((student == null) || student.HasErrors) return;
 
+                        SelectedStudent = null;
+
                         try
                         {
                             _repository.Add(student);
