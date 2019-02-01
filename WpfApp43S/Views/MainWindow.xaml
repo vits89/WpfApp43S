@@ -8,18 +8,23 @@
         Title="MainWindow" Height="350" Width="525">
 
     <Window.Resources>
-        <Style TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
-                </Trigger>
-            </Style.Triggers>
+        <Trigger x:Key="HasValidationErrorTrigger" Property="Validation.HasError" Value="true">
+            <Setter Property="Control.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+        </Trigger>
+
+        <Style x:Key="BaseStyle" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="3" />
         </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Padding" Value="12,2" />
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseStyle}" />
     </Window.Resources>
 
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Margin="3">
-            <TextBlock HorizontalAlignment="Center" Margin="2" Text="Студент" />
+            <TextBlock HorizontalAlignment="Center" Text="Студент" />
 
             <Grid DataContext="{Binding Path=SelectedStudent}" TextBox.GotFocus="TextBox_GotFocus">
                 <Grid.ColumnDefinitions>
@@ -32,26 +37,33 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource BaseStyle}">
+                        <Style.Triggers>
+                            <StaticResource ResourceKey="HasValidationErrorTrigger" />
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
 
-                <TextBlock Margin="3" Text="Имя *" />
-                <TextBox Grid.Column="1" Margin="3" Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBlock Text="Имя *" />
+                <TextBox Grid.Column="1" Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
 
-                <TextBlock Margin="3" Text="Фамилия *" Grid.Row="1" />
-                <TextBox Grid.Column="1" Grid.Row="1" Margin="3" Text="{Binding Path=LastName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBlock Text="Фамилия *" Grid.Row="1" />
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LastName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
 
-                <TextBlock Margin="3" Text="Возраст" Grid.Row="2" />
-                <TextBox Grid.Column="1" Grid.Row="2" Margin="3" Text="{Binding Path=Age, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBlock Text="Возраст" Grid.Row="2" />
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=Age, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
 
-                <TextBlock Margin="3" Text="Пол (0 - м, 1 - ж) *" Grid.Row="3" />
-                <TextBox Grid.Column="1" Grid.Row="3" Margin="3" Text="{Binding Path=Gender, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBlock Text="Пол (0 - м, 1 - ж) *" Grid.Row="3" />
+                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Path=Gender, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
             </Grid>
 
-            <TextBlock Margin="3" Text="Поля, отмеченные звёздочкой (*), обязательны для заполнения." />
+            <TextBlock Text="Поля, отмеченные звёздочкой (*), обязательны для заполнения." />
 
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button Content="Добавить" Command="{Binding Path=AddStudent}" CommandParameter="{Binding Path=SelectedStudent}" Margin="3" Padding="12,2" />
-                <Button Content="Редактировать" Command="{Binding Path=EditStudent}" CommandParameter="{Binding Path=SelectedStudent}" Margin="3" Padding="12,2" />
-                <Button Content="Удалить" Command="{Binding Path=DeleteStudents}" CommandParameter="{Binding ElementName=lbStudents, Path=SelectedItems}" Margin="3" Padding="12,2" />
+                <Button Content="Добавить" Command="{Binding Path=AddStudent}" CommandParameter="{Binding Path=SelectedStudent}" />
+                <Button Content="Редактировать" Command="{Binding Path=EditStudent}" CommandParameter="{Binding Path=SelectedStudent}" />
+                <Button Content="Удалить" Command="{Binding Path=DeleteStudents}" CommandParameter="{Binding ElementName=lbStudents, Path=SelectedItems}" />
             </StackPanel>
         </StackPanel>
 
