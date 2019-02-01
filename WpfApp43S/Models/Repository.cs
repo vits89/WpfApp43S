@@ -124,6 +124,10 @@ namespace WpfApp43S.Models
             {
                 throw e;
             }
+            finally
+            {
+                _document.Root.RemoveNodes();
+            }
         }
     }
 }
