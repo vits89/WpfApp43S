@@ -79,8 +79,10 @@ namespace WpfApp43S.ViewModels
 
                             if (!students.Any()) return;
 
-                            var text = string.Format("Вы действительно хотите удалить {0}?", students.Count() == 1 ? "выделенную запись" : "выделенные записи");
-                            var result = MessageBox.Show(text, "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            var text = string.Format("Вы действительно хотите удалить {0}?", students.Count() == 1 ?
+                                "выделенную запись" : "выделенные записи");
+                            var result = MessageBox.Show(text, "Подтвердите удаление", MessageBoxButton.YesNo,
+                                MessageBoxImage.Question);
 
                             if (result != MessageBoxResult.Yes) return;
 

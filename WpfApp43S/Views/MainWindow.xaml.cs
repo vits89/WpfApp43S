@@ -18,10 +18,7 @@ namespace WpfApp43S.Views
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (((MainWindowViewModel)DataContext).SelectedStudent == null)
-            {
-                ((MainWindowViewModel)DataContext).SelectedStudent = new Student();
-            }
+            ((MainWindowViewModel)DataContext).SelectedStudent ??= new Student();
         }
     }
 }

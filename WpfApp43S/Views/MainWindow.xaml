@@ -9,7 +9,7 @@
         Title="MainWindow" Height="350" Width="525">
 
     <Window.Resources>
-        <Trigger x:Key="HasValidationErrorTrigger" Property="Validation.HasError" Value="true">
+        <Trigger x:Key="HasValidationErrorTrigger" Property="Validation.HasError" Value="True">
             <Setter Property="Control.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
         </Trigger>
 
@@ -47,18 +47,18 @@
                 </Grid.Resources>
 
                 <TextBlock Text="Имя *" />
-                <TextBox Grid.Column="1" Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBox Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Grid.Column="1" />
 
                 <TextBlock Text="Фамилия *" Grid.Row="1" />
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=LastName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBox Text="{Binding Path=LastName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Grid.Column="1" Grid.Row="1" />
 
                 <TextBlock Text="Возраст" Grid.Row="2" />
-                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=Age, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                <TextBox Text="{Binding Path=Age, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Grid.Column="1" Grid.Row="2" />
 
                 <TextBlock Text="Пол *" VerticalAlignment="Center" Grid.Row="3" />
                 <ComboBox SelectedIndex="{Binding Path=Gender, Converter={valconv:GenderConverter}, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Grid.Column="1" Grid.Row="3">
                     <ComboBox.Style>
-                        <Style BasedOn="{StaticResource BaseStyle}" TargetType="ComboBox">
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource BaseStyle}">
                             <Style.Triggers>
                                 <StaticResource ResourceKey="HasValidationErrorTrigger" />
                             </Style.Triggers>
@@ -85,7 +85,7 @@
                 <ListBox.Style>
                     <Style TargetType="ListBox">
                         <Style.Triggers>
-                            <Trigger Property="HasItems" Value="false">
+                            <Trigger Property="HasItems" Value="False">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>

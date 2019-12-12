@@ -11,7 +11,7 @@ namespace WpfApp43S.Models
         {
             get
             {
-                IEnumerable<string> errors = null;
+                IEnumerable<string> errors;
 
                 switch (property)
                 {
