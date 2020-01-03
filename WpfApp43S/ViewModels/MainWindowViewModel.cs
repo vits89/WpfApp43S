@@ -25,9 +25,9 @@ namespace WpfApp43S.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IRepository repository)
         {
-            _repository = new Repository();
+            _repository = repository;
 
             Students = _repository.Get();
         }

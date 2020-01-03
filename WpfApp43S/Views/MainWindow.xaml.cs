@@ -12,8 +12,6 @@ namespace WpfApp43S.Views
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new MainWindowViewModel();
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
