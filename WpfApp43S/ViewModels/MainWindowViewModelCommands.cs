@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using WpfApp43S.Commands;
@@ -9,56 +10,71 @@ namespace WpfApp43S.ViewModels
 {
     public partial class MainWindowViewModel
     {
-        private RelayCommand<Student> _addStudent;
-        private RelayCommand<Student> _editStudent;
+        private RelayCommand<StudentViewModel> _addStudent;
+        private RelayCommand<StudentViewModel> _editStudent;
         private RelayCommand<ICollection> _deleteStudents;
 
-        public RelayCommand<Student> AddStudent
+        public RelayCommand<StudentViewModel> AddStudent
         {
             get
             {
                 if (_addStudent == null)
                 {
-                    _addStudent = new RelayCommand<Student>(student =>
+                    _addStudent = new RelayCommand<StudentViewModel>(studentVm =>
                     {
-                        if ((student == null) || student.HasErrors) return;
+                        if ((studentVm == null) || studentVm.HasErrors) return;
 
                         SelectedStudent = null;
+
+                        var student = _mapper.Map<Student>(studentVm);
 
                         try
                         {
                             _repository.Add(student);
+
+                            studentVm.Id = student.Id;
+
+                            Students.Add(studentVm);
                         }
                         catch (Exception e)
                         {
                             MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
-                    }, student => !((student == null) || student.HasErrors));
+                    }, studentVm => !((studentVm == null) || studentVm.HasErrors));
                 }
 
                 return _addStudent;
             }
         }
 
-        public RelayCommand<Student> EditStudent
+        public RelayCommand<StudentViewModel> EditStudent
         {
             get
             {
                 if (_editStudent == null)
                 {
-                    _editStudent = new RelayCommand<Student>(student =>
+                    _editStudent = new RelayCommand<StudentViewModel>(studentVm =>
                     {
-                        if ((student == null) || (student.Id < 0) || student.HasErrors) return;
+                        if ((studentVm == null) || (studentVm.Id < 0) || studentVm.HasErrors) return;
+
+                        var student = _mapper.Map<Student>(studentVm);
 
                         try
                         {
                             _repository.Update(student);
+
+                            var existingStudentVm = Students.First(s => s.Id == studentVm.Id);
+
+                            existingStudentVm.FirstName = studentVm.FirstName;
+                            existingStudentVm.LastName = studentVm.LastName;
+                            existingStudentVm.Gender = studentVm.Gender;
+                            existingStudentVm.Age = studentVm.Age;
                         }
                         catch (Exception e)
                         {
                             MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
-                    }, student => !((student == null) || (student.Id < 0) || student.HasErrors));
+                    }, studentVm => !((studentVm == null) || (studentVm.Id < 0) || studentVm.HasErrors));
                 }
 
                 return _editStudent;
@@ -75,18 +91,27 @@ namespace WpfApp43S.ViewModels
                     {
                         try
                         {
-                            var students = collection.Cast<Student>();
+                            var studentVms = collection.Cast<StudentViewModel>();
 
-                            if (!students.Any()) return;
+                            if (!studentVms.Any()) return;
 
-                            var text = string.Format("Вы действительно хотите удалить {0}?", students.Count() == 1 ?
+                            var text = string.Format("Вы действительно хотите удалить {0}?", studentVms.Count() == 1 ?
                                 "выделенную запись" : "выделенные записи");
                             var result = MessageBox.Show(text, "Подтвердите удаление", MessageBoxButton.YesNo,
                                 MessageBoxImage.Question);
 
                             if (result != MessageBoxResult.Yes) return;
 
+                            var students = _mapper.Map<IEnumerable<Student>>(studentVms);
+
                             _repository.Delete(students);
+
+                            var ids = studentVms.Select(s => s.Id).ToArray();
+
+                            foreach (var id in ids)
+                            {
+                                Students.Remove(Students.First(s => s.Id == id));
+                            }
                         }
                         catch (Exception e)
                         {

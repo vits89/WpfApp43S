@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace WpfApp43S.Models
+namespace WpfApp43S.ViewModels
 {
-    public partial class Student : IDataErrorInfo
+    public partial class StudentViewModel
     {
-        public string Error { get; }
-
-        public string this[string property]
+        public override string this[string property]
         {
             get
             {

@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -11,7 +10,7 @@ namespace WpfApp43S.Models
         private const string FILE_NAME = "Students.xml";
         private const string ROOT_ELEMENT_NAME = "Students";
 
-        private readonly ObservableCollection<Student> _students = new ObservableCollection<Student>();
+        private readonly List<Student> _students = new List<Student>();
 
         public Repository()
         {
@@ -21,7 +20,7 @@ namespace WpfApp43S.Models
 
                 using (var stream = new FileStream(FILE_NAME, FileMode.Open))
                 {
-                    _students = (ObservableCollection<Student>)serializer.Deserialize(stream);
+                    _students = (List<Student>)serializer.Deserialize(stream);
                 }
             }
             catch
@@ -31,8 +30,6 @@ namespace WpfApp43S.Models
 
         public void Add(Student student)
         {
-            if (student == null) return;
-
             student.Id = _students.Any() ? _students.Max(s => s.Id) + 1 : 0;
 
             _students.Add(student);
@@ -40,12 +37,12 @@ namespace WpfApp43S.Models
             Save();
         }
 
-        public ICollection<Student> Get() => _students;
+        public Student Get(int id) => _students.FirstOrDefault(s => s.Id == id);
+
+        public IEnumerable<Student> GetAll() => _students;
 
         public void Update(Student student)
         {
-            if (student == null) return;
-
             var existingStudent = _students.FirstOrDefault(s => s.Id == student.Id);
 
             if (existingStudent == null) return;
@@ -60,18 +57,11 @@ namespace WpfApp43S.Models
 
         public void Delete(IEnumerable<Student> students)
         {
-            if (!(students?.Any() ?? false)) return;
-
             var ids = students.Select(s => s.Id).ToArray();
 
             foreach (var id in ids)
             {
                 _students.Remove(_students.First(s => s.Id == id));
-            }
-
-            for (var i = 0; i < _students.Count; i++)
-            {
-                _students[i].Id = i;
             }
 
             Save();

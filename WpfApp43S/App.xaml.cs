@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using WpfApp43S.Infrastructure;
 using WpfApp43S.Models;
 using WpfApp43S.ViewModels;
 using WpfApp43S.Views;
@@ -36,6 +38,8 @@ namespace WpfApp43S
         {
             services.AddSingleton<IRepository, Repository>();
             services.AddSingleton<MainWindowViewModel>();
+
+            services.AddAutoMapper(typeof(StudentMapperProfile));
         }
     }
 }

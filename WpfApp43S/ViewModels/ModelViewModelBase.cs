@@ -5,15 +5,21 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace WpfApp43S.Models
+namespace WpfApp43S.ViewModels
 {
-    public abstract class BaseModel : INotifyDataErrorInfo
+    public abstract class ModelViewModelBase : ViewModelBase, ICloneable, IDataErrorInfo, INotifyDataErrorInfo
     {
         protected readonly Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
+
+        public string Error { get; }
+
+        public virtual string this[string property] => string.Empty;
 
         public bool HasErrors => _errors.Count > 0;
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        public virtual object Clone() => MemberwiseClone();
 
         public IEnumerable GetErrors(string property)
         {

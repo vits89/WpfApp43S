@@ -1,40 +1,37 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
+using AutoMapper;
 using WpfApp43S.Models;
 
 namespace WpfApp43S.ViewModels
 {
-    public partial class MainWindowViewModel : INotifyPropertyChanged
+    public partial class MainWindowViewModel : ViewModelBase
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        private Student _selectedStudent;
+        private StudentViewModel _selectedStudent;
 
-        public ICollection<Student> Students { get; }
+        public ObservableCollection<StudentViewModel> Students { get; }
 
-        public Student SelectedStudent
+        public StudentViewModel SelectedStudent
         {
             get => _selectedStudent;
             set
             {
-                _selectedStudent = (Student)value?.Clone();
+                _selectedStudent = (StudentViewModel)value?.Clone();
 
-                NotifyPropertyChanged(nameof(SelectedStudent));
+                NotifyPropertyChanged();
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public MainWindowViewModel(IRepository repository)
+        public MainWindowViewModel(IRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
 
-            Students = _repository.Get();
-        }
-
-        private void NotifyPropertyChanged(string property = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            Students = new ObservableCollection<StudentViewModel>(_mapper
+                .Map<IEnumerable<StudentViewModel>>(_repository.GetAll()));
         }
     }
 }
