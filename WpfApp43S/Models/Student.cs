@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 
 namespace WpfApp43S.Models
 {
@@ -11,6 +12,7 @@ namespace WpfApp43S.Models
         private int? _gender;
         private int? _age;
 
+        [XmlAttribute]
         public int Id { get; set; } = -1;
 
         [Required(ErrorMessage = "Вы не ввели имя")]
@@ -26,6 +28,7 @@ namespace WpfApp43S.Models
             }
         }
 
+        [XmlElement(ElementName = "Last")]
         [Required(ErrorMessage = "Вы не ввели фамилию")]
         public string LastName
         {
@@ -99,6 +102,8 @@ namespace WpfApp43S.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
         public object Clone() => MemberwiseClone();
+
+        public bool ShouldSerializeAge() => Age.HasValue;
 
         private void NotifyPropertyChanged(string property = "")
         {

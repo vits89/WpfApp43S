@@ -1,43 +1,28 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace WpfApp43S.Models
 {
     public class Repository : IRepository
     {
         private const string FILE_NAME = "Students.xml";
+        private const string ROOT_ELEMENT_NAME = "Students";
 
-        private readonly XDocument _document = new XDocument(new XElement("Students"));
         private readonly ObservableCollection<Student> _students = new ObservableCollection<Student>();
 
         public Repository()
         {
             try
             {
-                _document = XDocument.Load(FILE_NAME);
+                var serializer = new XmlSerializer(_students.GetType(), new XmlRootAttribute(ROOT_ELEMENT_NAME));
 
-                foreach (var element in _document.Root.Elements())
+                using (var stream = new FileStream(FILE_NAME, FileMode.Open))
                 {
-                    var student = new Student
-                    {
-                        Id = int.Parse(element.Attribute("Id").Value),
-                        FirstName = element.Element("FirstName").Value,
-                        LastName = element.Element("Last").Value,
-                        Gender = int.Parse(element.Element("Gender").Value)
-                    };
-
-                    if (element.Element("Age") != null)
-                    {
-                        student.Age = int.Parse(element.Element("Age").Value);
-                    }
-
-                    _students.Add(student);
+                    _students = (ObservableCollection<Student>)serializer.Deserialize(stream);
                 }
-
-                _document.Root.RemoveNodes();
             }
             catch
             {
@@ -94,39 +79,11 @@ namespace WpfApp43S.Models
 
         private void Save()
         {
-            var elements = _students.Select(s =>
+            var serializer = new XmlSerializer(_students.GetType(), new XmlRootAttribute(ROOT_ELEMENT_NAME));
+
+            using (var stream = new FileStream(FILE_NAME, FileMode.Create))
             {
-                var element = new XElement(
-                    "Student",
-                    new XAttribute("Id", s.Id),
-
-                    new XElement("FirstName", s.FirstName),
-                    new XElement("Last", s.LastName)
-                );
-
-                if (s.Age.HasValue)
-                {
-                    element.Add(new XElement("Age", s.Age.Value));
-                }
-
-                element.Add(new XElement("Gender", s.Gender.Value));
-
-                return element;
-            });
-
-            _document.Root.ReplaceNodes(elements);
-
-            try
-            {
-                _document.Save(FILE_NAME);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                _document.Root.RemoveNodes();
+                serializer.Serialize(stream, _students);
             }
         }
     }
