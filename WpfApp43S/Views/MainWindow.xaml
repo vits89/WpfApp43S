@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp43S.Views"
-        xmlns:valconv="clr-namespace:WpfApp43S.ValueConverters"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel LastChildFill="True">
@@ -33,11 +32,7 @@
                 <TextBox Text="{Binding Path=Age, TargetNullValue='', ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Style="{StaticResource TextBoxValidatedStyle}" Grid.Column="1" Grid.Row="2" />
 
                 <TextBlock Text="Пол *" VerticalAlignment="Center" Style="{StaticResource TextBlockStyle}" Grid.Row="3" />
-                <ComboBox SelectedIndex="{Binding Path=Gender, Converter={valconv:GenderConverter}, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Style="{StaticResource ComboBoxValidatedStyle}" Grid.Column="1" Grid.Row="3">
-                    <ComboBoxItem Content="" />
-                    <ComboBoxItem Content="мужчина" />
-                    <ComboBoxItem Content="женщина" />
-                </ComboBox>
+                <ComboBox ItemsSource="{Binding Path=DataContext.GenderOptions, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Path=Gender, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Style="{StaticResource ComboBoxValidatedStyle}" Grid.Column="1" Grid.Row="3" />
             </Grid>
 
             <TextBlock Text="Поля, отмеченные звёздочкой (*), обязательны для заполнения." Style="{StaticResource TextBlockStyle}" />
