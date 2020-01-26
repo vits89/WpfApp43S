@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:WpfApp43S.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
@@ -10,7 +11,7 @@
         <StackPanel DockPanel.Dock="Top" Margin="3">
             <TextBlock Text="Студент" HorizontalAlignment="Center" Style="{StaticResource TextBlockStyle}" />
 
-            <Grid DataContext="{Binding Path=SelectedStudent}" TextBox.GotFocus="TextBox_GotFocus">
+            <Grid DataContext="{Binding Path=SelectedStudent}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
@@ -21,6 +22,11 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="GotFocus">
+                        <behaviors:InvokeCommandAction Command="{Binding Path=DataContext.SetSelectedStudent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
 
                 <TextBlock Text="Имя *" Style="{StaticResource TextBlockStyle}" />
                 <TextBox Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Style="{StaticResource TextBoxValidatedStyle}" Grid.Column="1" />

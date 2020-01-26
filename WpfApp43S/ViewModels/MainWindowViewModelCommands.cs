@@ -14,6 +14,8 @@ namespace WpfApp43S.ViewModels
         private RelayCommand<StudentViewModel> _editStudent;
         private RelayCommand<ICollection> _deleteStudents;
 
+        private RelayCommand<object> _setSelectedStudent;
+
         public RelayCommand<StudentViewModel> AddStudent
         {
             get
@@ -121,6 +123,22 @@ namespace WpfApp43S.ViewModels
                 }
 
                 return _deleteStudents;
+            }
+        }
+
+        public RelayCommand<object> SetSelectedStudent
+        {
+            get
+            {
+                if (_setSelectedStudent == null)
+                {
+                    _setSelectedStudent = new RelayCommand<object>(parameter =>
+                    {
+                        SelectedStudent ??= new StudentViewModel();
+                    });
+                }
+
+                return _setSelectedStudent;
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using WpfApp43S.ViewModels;
 
 namespace WpfApp43S.Views
 {
@@ -11,11 +10,6 @@ namespace WpfApp43S.Views
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ((MainWindowViewModel)DataContext).SelectedStudent ??= new StudentViewModel();
         }
     }
 }
