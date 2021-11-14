@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using WpfApp43S.Infrastructure;
 using WpfApp43S.Models;
 using WpfApp43S.ViewModels;
@@ -14,27 +13,20 @@ namespace WpfApp43S
     /// </summary>
     public partial class App : Application
     {
-        public IServiceProvider ServiceProvider { get; private set; }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             var services = new ServiceCollection();
 
-            ConfigureServices(services);
+            AddServices(services);
 
-            ServiceProvider = services.BuildServiceProvider();
+            Ioc.Default.ConfigureServices(services.BuildServiceProvider());
 
-            var mainWindow = new MainWindow
-            {
-                DataContext = ServiceProvider.GetService<MainWindowViewModel>()
-            };
-
-            mainWindow.Show();
+            new MainWindow().Show();
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        private static void AddServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(StudentMapperProfile));
 

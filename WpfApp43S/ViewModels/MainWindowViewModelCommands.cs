@@ -3,20 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using WpfApp43S.Commands;
+using Microsoft.Toolkit.Mvvm.Input;
 using WpfApp43S.Models;
 
 namespace WpfApp43S.ViewModels
 {
     public partial class MainWindowViewModel
     {
-        private RelayCommand<StudentViewModel> _addStudent;
-        private RelayCommand<StudentViewModel> _editStudent;
-        private RelayCommand<ICollection> _deleteStudents;
+        private IRelayCommand<StudentViewModel> _addStudent;
+        private IRelayCommand<StudentViewModel> _editStudent;
+        private IRelayCommand<ICollection> _deleteStudents;
 
-        private RelayCommand<object> _setSelectedStudent;
+        private IRelayCommand _setSelectedStudent;
 
-        public RelayCommand<StudentViewModel> AddStudent
+        public IRelayCommand<StudentViewModel> AddStudent
         {
             get
             {
@@ -49,7 +49,7 @@ namespace WpfApp43S.ViewModels
             }
         }
 
-        public RelayCommand<StudentViewModel> EditStudent
+        public IRelayCommand<StudentViewModel> EditStudent
         {
             get
             {
@@ -83,7 +83,7 @@ namespace WpfApp43S.ViewModels
             }
         }
 
-        public RelayCommand<ICollection> DeleteStudents
+        public IRelayCommand<ICollection> DeleteStudents
         {
             get
             {
@@ -126,13 +126,13 @@ namespace WpfApp43S.ViewModels
             }
         }
 
-        public RelayCommand<object> SetSelectedStudent
+        public IRelayCommand SetSelectedStudent
         {
             get
             {
                 if (_setSelectedStudent == null)
                 {
-                    _setSelectedStudent = new RelayCommand<object>(parameter =>
+                    _setSelectedStudent = new RelayCommand(() =>
                     {
                         SelectedStudent ??= new StudentViewModel();
                     });

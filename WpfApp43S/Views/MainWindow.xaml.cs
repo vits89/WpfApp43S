@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using WpfApp43S.ViewModels;
 
 namespace WpfApp43S.Views
 {
@@ -10,6 +12,8 @@ namespace WpfApp43S.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
         }
     }
 }

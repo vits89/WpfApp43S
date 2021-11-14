@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using AutoMapper;
 using WpfApp43S.Models;
 
 namespace WpfApp43S.ViewModels
 {
-    public partial class MainWindowViewModel : ViewModelBase
+    public partial class MainWindowViewModel : ObservableObject
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
@@ -23,7 +24,7 @@ namespace WpfApp43S.ViewModels
             {
                 _selectedStudent = (StudentViewModel)value?.Clone();
 
-                NotifyPropertyChanged();
+                OnPropertyChanged();
             }
         }
 

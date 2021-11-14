@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace WpfApp43S.ViewModels
 {
-    public partial class StudentViewModel : ModelViewModelBase
+    public partial class StudentViewModel : ObservableValidator, ICloneable
     {
         private string _firstName;
         private string _lastName;
@@ -20,8 +21,8 @@ namespace WpfApp43S.ViewModels
             {
                 _firstName = value;
 
-                NotifyPropertyChanged(nameof(FirstName));
-                NotifyPropertyChanged(nameof(Info));
+                OnPropertyChanged(nameof(FirstName));
+                OnPropertyChanged(nameof(Info));
             }
         }
 
@@ -33,8 +34,8 @@ namespace WpfApp43S.ViewModels
             {
                 _lastName = value;
 
-                NotifyPropertyChanged(nameof(LastName));
-                NotifyPropertyChanged(nameof(Info));
+                OnPropertyChanged(nameof(LastName));
+                OnPropertyChanged(nameof(Info));
             }
         }
 
@@ -46,8 +47,8 @@ namespace WpfApp43S.ViewModels
             {
                 _gender = value;
 
-                NotifyPropertyChanged(nameof(Gender));
-                NotifyPropertyChanged(nameof(Info));
+                OnPropertyChanged(nameof(Gender));
+                OnPropertyChanged(nameof(Info));
             }
         }
 
@@ -59,8 +60,8 @@ namespace WpfApp43S.ViewModels
             {
                 _age = value;
 
-                NotifyPropertyChanged(nameof(Age));
-                NotifyPropertyChanged(nameof(Info));
+                OnPropertyChanged(nameof(Age));
+                OnPropertyChanged(nameof(Info));
             }
         }
 
@@ -94,5 +95,7 @@ namespace WpfApp43S.ViewModels
                 return $"{FirstName} {LastName}, {gender}, {age}";
             }
         }
+
+        public virtual object Clone() => MemberwiseClone();
     }
 }
