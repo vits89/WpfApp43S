@@ -12,9 +12,9 @@ namespace WpfApp43S.ViewModels
 
         private StudentViewModel _selectedStudent;
 
-        public ObservableCollection<StudentViewModel> Students { get; }
+        public IDictionary<string, int?> GenderOptions { get; }
 
-        public Dictionary<string, int?> GenderOptions { get; }
+        public ObservableCollection<StudentViewModel> Students { get; }
 
         public StudentViewModel SelectedStudent
         {
@@ -34,13 +34,13 @@ namespace WpfApp43S.ViewModels
 
             GenderOptions = new Dictionary<string, int?>
             {
-                [""] = null,
-                ["мужчина"] = 0,
-                ["женщина"] = 1
+                { "", null },
+                { "мужчина", 0 },
+                { "женщина", 1 }
             };
 
-            Students = new ObservableCollection<StudentViewModel>(_mapper
-                .Map<IEnumerable<StudentViewModel>>(_repository.GetAll()));
+            Students = new ObservableCollection<StudentViewModel>(
+                _mapper.Map<IEnumerable<StudentViewModel>>(_repository.GetAll()));
         }
     }
 }

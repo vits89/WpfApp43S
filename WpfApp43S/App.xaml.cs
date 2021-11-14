@@ -36,10 +36,11 @@ namespace WpfApp43S
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRepository, Repository>();
-            services.AddSingleton<MainWindowViewModel>();
-
             services.AddAutoMapper(typeof(StudentMapperProfile));
+
+            services.AddSingleton<IRepository, XmlFileRepository>();
+
+            services.AddTransient<MainWindowViewModel>();
         }
     }
 }

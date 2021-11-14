@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:local="clr-namespace:WpfApp43S.Views"
+        xmlns:viewmodels="clr-namespace:WpfApp43S.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Margin="3">

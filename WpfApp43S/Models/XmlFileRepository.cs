@@ -5,23 +5,22 @@ using System.Xml.Serialization;
 
 namespace WpfApp43S.Models
 {
-    public class Repository : IRepository
+    public class XmlFileRepository : IRepository
     {
         private const string FILE_NAME = "Students.xml";
         private const string ROOT_ELEMENT_NAME = "Students";
 
-        private readonly List<Student> _students = new List<Student>();
+        private readonly ICollection<Student> _students = new List<Student>();
 
-        public Repository()
+        public XmlFileRepository()
         {
             try
             {
                 var serializer = new XmlSerializer(_students.GetType(), new XmlRootAttribute(ROOT_ELEMENT_NAME));
 
-                using (var stream = new FileStream(FILE_NAME, FileMode.Open))
-                {
-                    _students = (List<Student>)serializer.Deserialize(stream);
-                }
+                using var stream = new FileStream(FILE_NAME, FileMode.Open);
+
+                _students = (ICollection<Student>)serializer.Deserialize(stream);
             }
             catch
             {
@@ -71,10 +70,9 @@ namespace WpfApp43S.Models
         {
             var serializer = new XmlSerializer(_students.GetType(), new XmlRootAttribute(ROOT_ELEMENT_NAME));
 
-            using (var stream = new FileStream(FILE_NAME, FileMode.Create))
-            {
-                serializer.Serialize(stream, _students);
-            }
+            using var stream = new FileStream(FILE_NAME, FileMode.Create);
+
+            serializer.Serialize(stream, _students);
         }
     }
 }
