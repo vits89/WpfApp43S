@@ -4,7 +4,7 @@ namespace WpfApp43S.ViewModels
 {
     public partial class StudentViewModel : IDataErrorInfo
     {
-        public string Error { get; }
+        public string Error { get; } = string.Empty;
 
         public string this[string property]
         {

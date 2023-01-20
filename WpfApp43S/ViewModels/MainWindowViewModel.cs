@@ -11,18 +11,18 @@ namespace WpfApp43S.ViewModels
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
 
-        private StudentViewModel _selectedStudent;
+        private StudentViewModel? _selectedStudent;
 
         public IDictionary<string, int?> GenderOptions { get; }
 
         public ObservableCollection<StudentViewModel> Students { get; }
 
-        public StudentViewModel SelectedStudent
+        public StudentViewModel? SelectedStudent
         {
             get => _selectedStudent;
             set
             {
-                _selectedStudent = (StudentViewModel)value?.Clone();
+                _selectedStudent = (StudentViewModel?)value?.Clone();
 
                 OnPropertyChanged();
             }

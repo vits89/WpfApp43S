@@ -20,7 +20,7 @@ namespace WpfApp43S.Models
 
                 using var stream = new FileStream(FILE_NAME, FileMode.Open);
 
-                _students = (ICollection<Student>)serializer.Deserialize(stream);
+                _students = (ICollection<Student>)serializer.Deserialize(stream)!;
             }
             catch
             {
@@ -36,7 +36,7 @@ namespace WpfApp43S.Models
             Save();
         }
 
-        public Student Get(int id) => _students.FirstOrDefault(s => s.Id == id);
+        public Student? Get(int id) => _students.FirstOrDefault(s => s.Id == id);
 
         public IEnumerable<Student> GetAll() => _students;
 

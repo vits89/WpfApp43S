@@ -10,11 +10,11 @@ namespace WpfApp43S.ViewModels
 {
     public partial class MainWindowViewModel
     {
-        private IRelayCommand<StudentViewModel> _addStudent;
-        private IRelayCommand<StudentViewModel> _editStudent;
-        private IRelayCommand<ICollection> _deleteStudents;
+        private IRelayCommand<StudentViewModel>? _addStudent;
+        private IRelayCommand<StudentViewModel>? _editStudent;
+        private IRelayCommand<ICollection>? _deleteStudents;
 
-        private IRelayCommand _setSelectedStudent;
+        private IRelayCommand? _setSelectedStudent;
 
         public IRelayCommand<StudentViewModel> AddStudent
         {
@@ -89,7 +89,7 @@ namespace WpfApp43S.ViewModels
                 {
                     try
                     {
-                        var studentVms = collection.Cast<StudentViewModel>();
+                        var studentVms = collection!.Cast<StudentViewModel>();
 
                         if (!studentVms.Any())
                         {

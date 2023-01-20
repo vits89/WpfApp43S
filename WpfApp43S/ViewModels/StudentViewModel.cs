@@ -7,15 +7,15 @@ namespace WpfApp43S.ViewModels
 {
     public partial class StudentViewModel : ObservableValidator, ICloneable
     {
-        private string _firstName;
-        private string _lastName;
+        private string? _firstName;
+        private string? _lastName;
         private int? _gender;
         private int? _age;
 
         public int Id { get; set; } = -1;
 
         [Required(ErrorMessage = "Вы не ввели имя")]
-        public string FirstName
+        public string? FirstName
         {
             get => _firstName;
             set
@@ -28,7 +28,7 @@ namespace WpfApp43S.ViewModels
         }
 
         [Required(ErrorMessage = "Вы не ввели фамилию")]
-        public string LastName
+        public string? LastName
         {
             get => _lastName;
             set
