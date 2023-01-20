@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using System.Linq;
 
 namespace WpfApp43S.ViewModels
 {
@@ -52,7 +53,7 @@ namespace WpfApp43S.ViewModels
             }
         }
 
-        [Range(16, 100, ErrorMessage = "Возраст должен находиться на отрезке [16, 100]")]
+        [Range(16, 100, ErrorMessage = "Возраст должен находиться на отрезке [{1}, {2}]")]
         public int? Age
         {
             get => _age;
@@ -83,7 +84,7 @@ namespace WpfApp43S.ViewModels
                 {
                     age += " год";
                 }
-                else if (Array.Exists(new[] { 2, 3, 4 }, e => e == ageLastDigit))
+                else if (new[] { 2, 3, 4 }.Contains(ageLastDigit))
                 {
                     age += " года";
                 }
