@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using WpfApp43S.ViewModels;
 
 namespace WpfApp43S.Views

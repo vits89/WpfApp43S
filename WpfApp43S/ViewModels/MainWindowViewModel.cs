@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp43S.Models;
 
 namespace WpfApp43S.ViewModels

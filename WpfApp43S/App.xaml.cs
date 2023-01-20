@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using WpfApp43S.Infrastructure;
 using WpfApp43S.Models;
 using WpfApp43S.ViewModels;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using WpfApp43S.Models;
 
 namespace WpfApp43S.ViewModels

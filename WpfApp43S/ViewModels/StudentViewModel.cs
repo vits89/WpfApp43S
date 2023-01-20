@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace WpfApp43S.ViewModels
 {
