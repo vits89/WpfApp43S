@@ -1,39 +1,38 @@
 ﻿using System.ComponentModel;
 
-namespace WpfApp43S.ViewModels
+namespace WpfApp43S.ViewModels;
+
+public partial class StudentViewModel : IDataErrorInfo
 {
-    public partial class StudentViewModel : IDataErrorInfo
+    public string Error { get; } = string.Empty;
+
+    public string this[string property]
     {
-        public string Error { get; } = string.Empty;
-
-        public string this[string property]
+        get
         {
-            get
+            switch (property)
             {
-                switch (property)
-                {
-                    case nameof(FirstName):
-                        ValidateProperty(FirstName, property);
+                case nameof(FirstName):
+                    ValidateProperty(FirstName, property);
 
-                        break;
-                    case nameof(LastName):
-                        ValidateProperty(LastName, property);
+                    break;
+                case nameof(LastName):
+                    ValidateProperty(LastName, property);
 
-                        break;
-                    case nameof(Gender):
-                        ValidateProperty(Gender, property);
+                    break;
+                case nameof(Gender):
+                    ValidateProperty(Gender, property);
 
-                        break;
-                    case nameof(Age):
-                        ValidateProperty(Age, property);
+                    break;
+                case nameof(Age):
+                    ValidateProperty(Age, property);
 
-                        break;
-                    default:
-                        return string.Empty;
-                }
-
-                return string.Empty;
+                    break;
+                default:
+                    return string.Empty;
             }
+
+            return string.Empty;
         }
     }
 }

@@ -1,47 +1,43 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WpfApp43S.Models;
 
-namespace WpfApp43S.ViewModels
+namespace WpfApp43S.ViewModels;
+
+public partial class MainWindowViewModel : ObservableObject
 {
-    public partial class MainWindowViewModel : ObservableObject
+    private readonly IRepository _repository;
+    private readonly IMapper _mapper;
+
+    private StudentViewModel? _selectedStudent;
+
+    public IDictionary<string, int?> GenderOptions { get; } = new Dictionary<string, int?>
     {
-        private readonly IRepository _repository;
-        private readonly IMapper _mapper;
+        { "", null },
+        { "мужчина", 0 },
+        { "женщина", 1 }
+    };
 
-        private StudentViewModel? _selectedStudent;
+    public ObservableCollection<StudentViewModel> Students { get; }
 
-        public IDictionary<string, int?> GenderOptions { get; }
-
-        public ObservableCollection<StudentViewModel> Students { get; }
-
-        public StudentViewModel? SelectedStudent
+    public StudentViewModel? SelectedStudent
+    {
+        get => _selectedStudent;
+        set
         {
-            get => _selectedStudent;
-            set
-            {
-                _selectedStudent = (StudentViewModel?)value?.Clone();
+            _selectedStudent = (StudentViewModel?)value?.Clone();
 
-                OnPropertyChanged();
-            }
+            OnPropertyChanged();
         }
+    }
 
-        public MainWindowViewModel(IRepository repository, IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
+    public MainWindowViewModel(IRepository repository, IMapper mapper)
+    {
+        _repository = repository;
+        _mapper = mapper;
 
-            GenderOptions = new Dictionary<string, int?>
-            {
-                { "", null },
-                { "мужчина", 0 },
-                { "женщина", 1 }
-            };
-
-            Students = new ObservableCollection<StudentViewModel>(
-                _mapper.Map<IEnumerable<StudentViewModel>>(_repository.GetAll()));
-        }
+        Students = new ObservableCollection<StudentViewModel>(
+            _mapper.Map<IEnumerable<StudentViewModel>>(_repository.GetAll()));
     }
 }

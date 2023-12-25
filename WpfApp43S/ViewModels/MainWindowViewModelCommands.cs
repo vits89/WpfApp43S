@@ -1,142 +1,142 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp43S.Models;
 
-namespace WpfApp43S.ViewModels
+namespace WpfApp43S.ViewModels;
+
+public partial class MainWindowViewModel
 {
-    public partial class MainWindowViewModel
+    private IRelayCommand<StudentViewModel>? _addStudent;
+    private IRelayCommand<StudentViewModel>? _editStudent;
+    private IRelayCommand<ICollection>? _deleteStudents;
+
+    private IRelayCommand? _setSelectedStudent;
+
+    public IRelayCommand<StudentViewModel> AddStudent
     {
-        private IRelayCommand<StudentViewModel>? _addStudent;
-        private IRelayCommand<StudentViewModel>? _editStudent;
-        private IRelayCommand<ICollection>? _deleteStudents;
-
-        private IRelayCommand? _setSelectedStudent;
-
-        public IRelayCommand<StudentViewModel> AddStudent
+        get
         {
-            get
+            _addStudent ??= new RelayCommand<StudentViewModel>(studentVm =>
             {
-                _addStudent ??= new RelayCommand<StudentViewModel>(studentVm =>
+                if (studentVm is null || studentVm.HasErrors)
                 {
-                    if ((studentVm == null) || studentVm.HasErrors)
+                    return;
+                }
+
+                SelectedStudent = null;
+
+                var student = _mapper.Map<Student>(studentVm);
+
+                try
+                {
+                    _repository.Add(student);
+
+                    studentVm.Id = student.Id;
+
+                    Students.Add(studentVm);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }, studentVm => !(studentVm is null || studentVm.HasErrors));
+
+            return _addStudent;
+        }
+    }
+
+    public IRelayCommand<StudentViewModel> EditStudent
+    {
+        get
+        {
+            _editStudent ??= new RelayCommand<StudentViewModel>(studentVm =>
+            {
+                if (studentVm is null || studentVm.Id < 0 || studentVm.HasErrors)
+                {
+                    return;
+                }
+
+                try
+                {
+                    _repository.Update(_mapper.Map<Student>(studentVm));
+
+                    var existingStudentVm = Students.First(s => s.Id == studentVm.Id);
+
+                    existingStudentVm.FirstName = studentVm.FirstName;
+                    existingStudentVm.LastName = studentVm.LastName;
+                    existingStudentVm.Gender = studentVm.Gender;
+                    existingStudentVm.Age = studentVm.Age;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }, studentVm => !(studentVm is null || studentVm.Id < 0 || studentVm.HasErrors));
+
+            return _editStudent;
+        }
+    }
+
+    public IRelayCommand<ICollection> DeleteStudents
+    {
+        get
+        {
+            _deleteStudents ??= new RelayCommand<ICollection>(collection =>
+            {
+                try
+                {
+                    var studentVms = collection!.Cast<StudentViewModel>();
+
+                    if (!studentVms.Any())
                     {
                         return;
                     }
 
-                    SelectedStudent = null;
+                    var text = string.Format(
+                        "Вы действительно хотите удалить {0}?",
+                        studentVms.Count() == 1 ? "выделенную запись" : "выделенные записи");
 
-                    var student = _mapper.Map<Student>(studentVm);
+                    var result = MessageBox.Show(
+                        text,
+                        "Подтвердите удаление",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
 
-                    try
-                    {
-                        _repository.Add(student);
-
-                        studentVm.Id = student.Id;
-
-                        Students.Add(studentVm);
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }, studentVm => !((studentVm == null) || studentVm.HasErrors));
-
-                return _addStudent;
-            }
-        }
-
-        public IRelayCommand<StudentViewModel> EditStudent
-        {
-            get
-            {
-                _editStudent ??= new RelayCommand<StudentViewModel>(studentVm =>
-                {
-                    if ((studentVm == null) || (studentVm.Id < 0) || studentVm.HasErrors)
+                    if (result != MessageBoxResult.Yes)
                     {
                         return;
                     }
 
-                    try
+                    _repository.Delete(_mapper.Map<IEnumerable<Student>>(studentVms));
+
+                    var ids = studentVms.Select(s => s.Id).ToArray();
+
+                    foreach (var id in ids)
                     {
-                        _repository.Update(_mapper.Map<Student>(studentVm));
-
-                        var existingStudentVm = Students.First(s => s.Id == studentVm.Id);
-
-                        existingStudentVm.FirstName = studentVm.FirstName;
-                        existingStudentVm.LastName = studentVm.LastName;
-                        existingStudentVm.Gender = studentVm.Gender;
-                        existingStudentVm.Age = studentVm.Age;
+                        Students.Remove(Students.First(s => s.Id == id));
                     }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }, studentVm => !((studentVm == null) || (studentVm.Id < 0) || studentVm.HasErrors));
-
-                return _editStudent;
-            }
-        }
-
-        public IRelayCommand<ICollection> DeleteStudents
-        {
-            get
-            {
-                _deleteStudents ??= new RelayCommand<ICollection>(collection =>
+                }
+                catch (Exception e)
                 {
-                    try
-                    {
-                        var studentVms = collection!.Cast<StudentViewModel>();
+                    MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }, collection => (collection?.Count ?? 0) > 0);
 
-                        if (!studentVms.Any())
-                        {
-                            return;
-                        }
-
-                        var text = string.Format("Вы действительно хотите удалить {0}?",
-                            studentVms.Count() == 1 ? "выделенную запись" : "выделенные записи");
-
-                        var result = MessageBox.Show(text, "Подтвердите удаление", MessageBoxButton.YesNo,
-                            MessageBoxImage.Question);
-
-                        if (result != MessageBoxResult.Yes)
-                        {
-                            return;
-                        }
-
-                        _repository.Delete(_mapper.Map<IEnumerable<Student>>(studentVms));
-
-                        var ids = studentVms.Select(s => s.Id).ToArray();
-
-                        foreach (var id in ids)
-                        {
-                            Students.Remove(Students.First(s => s.Id == id));
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }, collection => (collection?.Count ?? 0) > 0);
-
-                return _deleteStudents;
-            }
+            return _deleteStudents;
         }
+    }
 
-        public IRelayCommand SetSelectedStudent
+    public IRelayCommand SetSelectedStudent
+    {
+        get
         {
-            get
+            _setSelectedStudent ??= new RelayCommand(() =>
             {
-                _setSelectedStudent ??= new RelayCommand(() =>
-                {
-                    SelectedStudent ??= new StudentViewModel();
-                });
+                SelectedStudent ??= new StudentViewModel();
+            });
 
-                return _setSelectedStudent;
-            }
+            return _setSelectedStudent;
         }
     }
 }
