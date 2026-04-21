@@ -7,17 +7,11 @@ namespace WpfApp43S.ViewModels;
 
 public partial class MainWindowViewModel
 {
-    private IRelayCommand<StudentViewModel>? _addStudent;
-    private IRelayCommand<StudentViewModel>? _editStudent;
-    private IRelayCommand<ICollection>? _deleteStudents;
-
-    private IRelayCommand? _setSelectedStudent;
-
     public IRelayCommand<StudentViewModel> AddStudent
     {
         get
         {
-            _addStudent ??= new RelayCommand<StudentViewModel>(studentVm =>
+            field ??= new RelayCommand<StudentViewModel>(studentVm =>
             {
                 if (studentVm is null || studentVm.HasErrors)
                 {
@@ -42,7 +36,7 @@ public partial class MainWindowViewModel
                 }
             }, studentVm => !(studentVm is null || studentVm.HasErrors));
 
-            return _addStudent;
+            return field;
         }
     }
 
@@ -50,7 +44,7 @@ public partial class MainWindowViewModel
     {
         get
         {
-            _editStudent ??= new RelayCommand<StudentViewModel>(studentVm =>
+            field ??= new RelayCommand<StudentViewModel>(studentVm =>
             {
                 if (studentVm is null || studentVm.Id < 0 || studentVm.HasErrors)
                 {
@@ -74,7 +68,7 @@ public partial class MainWindowViewModel
                 }
             }, studentVm => !(studentVm is null || studentVm.Id < 0 || studentVm.HasErrors));
 
-            return _editStudent;
+            return field;
         }
     }
 
@@ -82,7 +76,7 @@ public partial class MainWindowViewModel
     {
         get
         {
-            _deleteStudents ??= new RelayCommand<ICollection>(collection =>
+            field ??= new RelayCommand<ICollection>(collection =>
             {
                 try
                 {
@@ -123,7 +117,7 @@ public partial class MainWindowViewModel
                 }
             }, collection => (collection?.Count ?? 0) > 0);
 
-            return _deleteStudents;
+            return field;
         }
     }
 
@@ -131,12 +125,12 @@ public partial class MainWindowViewModel
     {
         get
         {
-            _setSelectedStudent ??= new RelayCommand(() =>
+            field ??= new RelayCommand(() =>
             {
                 SelectedStudent ??= new StudentViewModel();
             });
 
-            return _setSelectedStudent;
+            return field;
         }
     }
 }

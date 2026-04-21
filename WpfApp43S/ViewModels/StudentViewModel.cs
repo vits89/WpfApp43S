@@ -5,20 +5,15 @@ namespace WpfApp43S.ViewModels;
 
 public partial class StudentViewModel : ObservableValidator, ICloneable
 {
-    private string? _firstName;
-    private string? _lastName;
-    private int? _gender;
-    private int? _age;
-
     public int Id { get; set; } = -1;
 
     [Required(ErrorMessage = "Вы не ввели имя")]
     public string? FirstName
     {
-        get => _firstName;
+        get => field;
         set
         {
-            _firstName = value;
+            field = value;
 
             OnPropertyChanged(nameof(FirstName));
             OnPropertyChanged(nameof(Info));
@@ -28,10 +23,10 @@ public partial class StudentViewModel : ObservableValidator, ICloneable
     [Required(ErrorMessage = "Вы не ввели фамилию")]
     public string? LastName
     {
-        get => _lastName;
+        get => field;
         set
         {
-            _lastName = value;
+            field = value;
 
             OnPropertyChanged(nameof(LastName));
             OnPropertyChanged(nameof(Info));
@@ -41,10 +36,10 @@ public partial class StudentViewModel : ObservableValidator, ICloneable
     [Required(ErrorMessage = "Вы не указали пол")]
     public int? Gender
     {
-        get => _gender;
+        get => field;
         set
         {
-            _gender = value;
+            field = value;
 
             OnPropertyChanged(nameof(Gender));
             OnPropertyChanged(nameof(Info));
@@ -54,10 +49,10 @@ public partial class StudentViewModel : ObservableValidator, ICloneable
     [Range(16, 100, ErrorMessage = "Возраст должен находиться на отрезке [{1}, {2}]")]
     public int? Age
     {
-        get => _age;
+        get => field;
         set
         {
-            _age = value;
+            field = value;
 
             OnPropertyChanged(nameof(Age));
             OnPropertyChanged(nameof(Info));

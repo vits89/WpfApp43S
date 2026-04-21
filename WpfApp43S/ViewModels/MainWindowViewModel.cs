@@ -10,8 +10,6 @@ public partial class MainWindowViewModel : ObservableObject
     private readonly IRepository _repository;
     private readonly IMapper _mapper;
 
-    private StudentViewModel? _selectedStudent;
-
     public IDictionary<string, int?> GenderOptions { get; } = new Dictionary<string, int?>
     {
         { "", null },
@@ -23,10 +21,10 @@ public partial class MainWindowViewModel : ObservableObject
 
     public StudentViewModel? SelectedStudent
     {
-        get => _selectedStudent;
+        get => field;
         set
         {
-            _selectedStudent = (StudentViewModel?)value?.Clone();
+            field = (StudentViewModel?)value?.Clone();
 
             OnPropertyChanged();
         }
