@@ -8,7 +8,7 @@ public class XmlFileRepository : IRepository
     private const string fileName = "Students.xml";
     private const string rootElementName = "Students";
 
-    private readonly ICollection<Student> _students = new List<Student>();
+    private readonly ICollection<Student> _students = [];
 
     public XmlFileRepository()
     {
@@ -57,9 +57,7 @@ public class XmlFileRepository : IRepository
 
     public void Delete(IEnumerable<Student> students)
     {
-        var ids = students.Select(s => s.Id).ToArray();
-
-        foreach (var id in ids)
+        foreach (var id in students.Select(s => s.Id))
         {
             _students.Remove(_students.First(s => s.Id == id));
         }

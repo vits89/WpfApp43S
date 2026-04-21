@@ -8,7 +8,10 @@ public class StudentMapperProfile : Profile
 {
     public StudentMapperProfile()
     {
-        CreateMap<Student, StudentViewModel>();
-        CreateMap<StudentViewModel, Student>();
+        CreateMap<Student, StudentViewModel>()
+            .ReverseMap();
+
+        CreateMap<StudentViewModel, StudentViewModel>()
+            .ForMember(dst => dst.Id, opts => opts.Ignore());
     }
 }
