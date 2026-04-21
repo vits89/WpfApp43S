@@ -72,24 +72,22 @@ public partial class MainWindowViewModel
         }
     }
 
-    public IRelayCommand<ICollection> DeleteStudents
+    public IRelayCommand<IReadOnlyCollection<StudentViewModel>> DeleteStudents
     {
         get
         {
-            field ??= new RelayCommand<ICollection>(collection =>
+            field ??= new RelayCommand<IReadOnlyCollection<StudentViewModel>>(studentVms =>
             {
                 try
                 {
-                    var studentVms = collection!.Cast<StudentViewModel>();
-
-                    if (!studentVms.Any())
+                    if (studentVms!.Count == 0)
                     {
                         return;
                     }
 
                     var text = string.Format(
                         "Вы действительно хотите удалить {0}?",
-                        studentVms.Count() == 1 ? "выделенную запись" : "выделенные записи");
+                        studentVms.Count == 1 ? "выделенную запись" : "выделенные записи");
 
                     var result = MessageBox.Show(
                         text,
@@ -115,7 +113,7 @@ public partial class MainWindowViewModel
                 {
                     MessageBox.Show(e.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }, collection => (collection?.Count ?? 0) > 0);
+            }, studentVms => (studentVms?.Count ?? 0) > 0);
 
             return field;
         }
@@ -129,6 +127,17 @@ public partial class MainWindowViewModel
             {
                 SelectedStudent ??= new StudentViewModel();
             });
+
+            return field;
+        }
+    }
+
+    public IRelayCommand<IList> SetSelectedStudents
+    {
+        get
+        {
+            field ??= new RelayCommand<IList>(
+                items => SelectedStudents = items?.Cast<StudentViewModel>().ToList().AsReadOnly());
 
             return field;
         }

@@ -26,6 +26,23 @@ public partial class MainWindowViewModel : ObservableObject
         {
             field = (StudentViewModel?)value?.Clone();
 
+            field?.ErrorsChanged += (_, _) =>
+            {
+                AddStudent.NotifyCanExecuteChanged();
+                EditStudent.NotifyCanExecuteChanged();
+            };
+
+            OnPropertyChanged();
+        }
+    }
+
+    public IReadOnlyCollection<StudentViewModel>? SelectedStudents
+    {
+        get => field;
+        set
+        {
+            field = value;
+
             OnPropertyChanged();
         }
     }

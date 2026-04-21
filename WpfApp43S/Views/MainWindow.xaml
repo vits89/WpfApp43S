@@ -45,14 +45,20 @@
             <TextBlock Text="Поля, отмеченные звёздочкой (*), обязательны для заполнения." Style="{StaticResource TextBlockStyle}" />
 
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button Content="Добавить" Command="{Binding Path=AddStudent}" CommandParameter="{Binding Path=SelectedStudent}" Style="{StaticResource ButtonStyle}" />
-                <Button Content="Редактировать" Command="{Binding Path=EditStudent}" CommandParameter="{Binding Path=SelectedStudent}" Style="{StaticResource ButtonStyle}" />
-                <Button Content="Удалить" Command="{Binding Path=DeleteStudents}" CommandParameter="{Binding Path=SelectedItems, ElementName=lbStudents}" Style="{StaticResource ButtonStyle}" />
+                <Button Content="Добавить" CommandParameter="{Binding Path=SelectedStudent}" Command="{Binding Path=AddStudent}" Style="{StaticResource ButtonStyle}" />
+                <Button Content="Редактировать" CommandParameter="{Binding Path=SelectedStudent}" Command="{Binding Path=EditStudent}" Style="{StaticResource ButtonStyle}" />
+                <Button Content="Удалить" CommandParameter="{Binding Path=SelectedStudents}" Command="{Binding Path=DeleteStudents}" Style="{StaticResource ButtonStyle}" />
             </StackPanel>
         </StackPanel>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox x:Name="lbStudents" ItemsSource="{Binding Path=Students}" DisplayMemberPath="Info" SelectedItem="{Binding Path=SelectedStudent}" Style="{StaticResource ListBoxStyle}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" AlternationCount="2" SelectionMode="Extended" />
+            <ListBox ItemsSource="{Binding Path=Students}" DisplayMemberPath="Info" SelectedItem="{Binding Path=SelectedStudent}" Style="{StaticResource ListBoxStyle}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" AlternationCount="2" SelectionMode="Extended">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="SelectionChanged">
+                        <behaviors:InvokeCommandAction CommandParameter="{Binding Path=SelectedItems, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" Command="{Binding Path=SetSelectedStudents}" />
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ListBox>
         </ScrollViewer>
     </DockPanel>
 </Window>
